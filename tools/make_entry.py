@@ -37,9 +37,12 @@ def font(path, size):
     return ImageFont.truetype(path, size)
 
 
-def sp_text(draw, xy, s, f, fill, spacing=2):
-    """Letter-spaced small caps-ish text, drawn letter by letter."""
+def sp_text(draw, xy, s, f, fill, spacing=2, right=None):
+    """Letter-spaced text, drawn letter by letter; aligned to `right` when given."""
     x, y = xy
+    if right is not None:
+        width = sum(draw.textlength(ch, font=f) + spacing for ch in s) - spacing
+        x = right - width
     for ch in s:
         draw.text((x, y), ch, font=f, fill=fill)
         x += draw.textlength(ch, font=f) + spacing
@@ -282,11 +285,12 @@ def draw():
     f_foot = font(REG, 13)
 
     # ---- masthead ----
-    d.text((24, 18), "THE WORLD TODAY", font=f_mast, fill=INK)
+    d.text((24, 14), "THE WORLD TODAY", font=f_mast, fill=INK)
     right = "One day, one page"
-    d.text((1000 - d.textlength(right, font=f_mast_small), 20), right, font=f_mast_small, fill=MUTED)
-    date = "Thursday 19 November 2026"
-    d.text((1000 - d.textlength(date, font=font(BOLD, 18)), 42), date, font=font(BOLD, 18), fill=INK)
+    d.text((1000 - d.textlength(right, font=f_mast_small), 16), right, font=f_mast_small, fill=MUTED)
+    sp_text(d, (0, 36), "THURSDAY", font(BOLD, 14), RED, spacing=3, right=998)
+    d.text((1000 - d.textlength("19 NOVEMBER 2026", font=font(BOLD, 31)), 52),
+           "19 NOVEMBER 2026", font=font(BOLD, 31), fill=INK)
     rule(d, 84, 24, 1000, INK, 3)
 
     # ---- strap line ----
