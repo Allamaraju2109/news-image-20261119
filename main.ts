@@ -7,6 +7,9 @@
 //
 // Run it locally with:
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
+//
+// The image it writes is the whole entry: 1024 by 1024 pixels, under 1 MiB, and identical on
+// every run, because the bytes are fixed in entry.png and never drawn afresh.
 
 import { copyFileSync } from 'node:fs';
 import { join } from 'node:path';
